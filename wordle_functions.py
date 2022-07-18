@@ -143,6 +143,7 @@ def set_score(m_score, b_score, draw):
 	Function that sets a custom score for both people.
 	m_score --> Murilo's score
 	b_score --> Barbara's score
+	draw --> Draw
 	"""
 	# Load DataFrame
 	data = load_data(file_name='wordle_ranking.csv')
