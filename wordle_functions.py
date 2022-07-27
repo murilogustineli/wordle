@@ -40,6 +40,8 @@ def find_words(words: list,
                         counter += 1
                         if counter == len(yellow_letter_positions):
                             possible_words.append(words[w])
+            else:
+                possible_words.append(words[w])
             # Check position of letters in word if it has green letters
             if (len(green_letters) and len(green_letter_positions)) > 0:
                 # Go through each letter and check if they're in the right place
@@ -50,8 +52,6 @@ def find_words(words: list,
                         #     possible_words.append(words[w])
                     else:
                         break
-            # else:
-            #     possible_words.append(words[w])
 
     # Return list of possible words
     return possible_words
@@ -68,7 +68,8 @@ def main(green_letters: str,
     1. green_letters --> string that represents green letters in wordle guess
     2. green_letter_positions --> list of the positions of the green_letters ranging from 1 to 5
     3. yellow_letters --> string that represents yellow letters in wordle guess
-    4. bad_letters --> string that represents gray letters in wordle guess
+    4. yellow_letter_positions --> list of the positions of the yellow_letters ranging from 1 to 5
+    5. bad_letters --> string that represents gray letters in wordle guess
     """
     # Load words list
     words = load_words(file_path="wordle-answers-alphabetical.txt")
