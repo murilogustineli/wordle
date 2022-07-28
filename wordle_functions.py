@@ -24,37 +24,44 @@ def find_words(words: list,
                bad_letters: str) -> list:
     # List of possible words
     possible_words = []
-    # Subtract 1 from every value in green_letter_positions
+    final_words = []
+
+    # Subtract 1 from every value in green and yellow letter positions
     green_letter_positions = np.array(green_letter_positions) - 1
     yellow_letter_positions = np.array(yellow_letter_positions) - 1
 
     # Iterate over each word in Wordle
     for w in range(len(words)):
         # Check words that do not have bad_letters and have yellow_letters
-        if not any(l in words[w] for l in bad_letters) and all(l in words[w] for l in yellow_letters):
+        if not any(let in words[w] for let in bad_letters) and all(let in words[w] for let in yellow_letters):
             # Check position of yellow letters in word
-            if len(yellow_letter_positions) > 0:
+            if len(yellow_letters) > 0 and len(yellow_letter_positions) == 0:
+                possible_words.append(words[w])
+
+            elif len(yellow_letter_positions) > 0:
                 counter = 0
                 for i in range(len(yellow_letter_positions)):
                     if str(words[w][yellow_letter_positions[i]]) != str(yellow_letters[i]):
                         counter += 1
                         if counter == len(yellow_letter_positions):
                             possible_words.append(words[w])
-            else:
-                possible_words.append(words[w])
-            # Check position of letters in word if it has green letters
-            if (len(green_letters) and len(green_letter_positions)) > 0:
-                # Go through each letter and check if they're in the right place
-                for n in range(len(green_letter_positions)):
-                    if str(words[w][green_letter_positions[n]]) == str(green_letters[n]):
-                        possible_words.append(words[w])
-                        # if n == len(green_letter_positions) - 1:
-                        #     possible_words.append(words[w])
-                    else:
-                        break
+
+    # Check position of letters in word if it has green letters
+    if (len(green_letters) and len(green_letter_positions)) > 0:
+        for i in range(len(possible_words)):
+            # Go through each letter and check if they're in the right place
+            for n in range(len(green_letter_positions)):
+                if str(possible_words[i][green_letter_positions[n]]) == str(green_letters[n]):
+                    final_words.append(possible_words[i])
+                    # if n == len(green_letter_positions) - 1:
+                    #     possible_words.append(words[w])
+                else:
+                    break
+    else:
+        final_words = possible_words
 
     # Return list of possible words
-    return possible_words
+    return final_words
 
 
 # Main function that returns a list of possible words
@@ -119,7 +126,7 @@ def score() -> pd.DataFrame:
     \nEnter 'M' if Murilo won. \
     \nEnter 'B' if Barbara won. \
     \nEnter 'D' if it was a Draw. \
-    \nPlease enter [M/B/D]").lower()
+    \nPlease enter [M/B/D]:").lower()
 
     # Add points to winner
     if winner == 'M'.lower():
@@ -193,11 +200,11 @@ def set_score(m_score, b_score, draw) -> pd.DataFrame:
 # # Call main function
 # if __name__ == '__main__':
 #     # Main function that returns a list of possible words
-#   green_letters = ''
-#   green_positions = []
-#   yellow_letters = 'OT'
-#   yellow_positions = [3, 5]
-#   bad_letters = 'CRANESPU'
+#     green_letter = 'S'
+#     green_positions = [1]
+#     yellow_letter = 'P'
+#     yellow_positions = [2]
+#     bad_letter = 'CRANE'
 
-#   # Main function that returns a list of possible words
-#   main(green_letters, green_positions, yellow_letters, yellow_positions, bad_letters)
+#     # Main function that returns a list of possible words
+#     main(green_letter, green_positions, yellow_letter, yellow_positions, bad_letter)
