@@ -45,6 +45,8 @@ def find_words(words: list,
                         counter += 1
                         if counter == len(yellow_letter_positions):
                             possible_words.append(words[w])
+            else:
+                possible_words.append(words[w])
 
     # Check position of letters in word if it has green letters
     if (len(green_letters) and len(green_letter_positions)) > 0:
@@ -52,9 +54,9 @@ def find_words(words: list,
             # Go through each letter and check if they're in the right place
             for n in range(len(green_letter_positions)):
                 if str(possible_words[i][green_letter_positions[n]]) == str(green_letters[n]):
-                    final_words.append(possible_words[i])
-                    # if n == len(green_letter_positions) - 1:
-                    #     possible_words.append(words[w])
+                    # final_words.append(possible_words[i])
+                    if n == len(green_letter_positions) - 1:
+                        final_words.append(possible_words[i])
                 else:
                     break
     else:
@@ -200,11 +202,11 @@ def set_score(m_score, b_score, draw) -> pd.DataFrame:
 # # Call main function
 # if __name__ == '__main__':
 #     # Main function that returns a list of possible words
-#     green_letter = 'S'
-#     green_positions = [1]
-#     yellow_letter = 'P'
-#     yellow_positions = [2]
-#     bad_letter = 'CRANE'
+#     green_letter = 'CRA'
+#     green_positions = [1,2,3]
+#     yellow_letter = ''
+#     yellow_positions = []
+#     bad_letter = 'NE'
 
 #     # Main function that returns a list of possible words
 #     main(green_letter, green_positions, yellow_letter, yellow_positions, bad_letter)
