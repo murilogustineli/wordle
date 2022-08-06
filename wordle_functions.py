@@ -73,7 +73,7 @@ def main(green_letters: str,
          yellow_letter_positions: list,
          bad_letters: str) -> print():
     """
-    Function takes  4 arguments:
+    Function takes  5 arguments:
     1. green_letters --> string that represents green letters in wordle guess
     2. green_letter_positions --> list of the positions of the green_letters ranging from 1 to 5
     3. yellow_letters --> string that represents yellow letters in wordle guess
@@ -203,10 +203,10 @@ def set_score(m_score, b_score, draw) -> pd.DataFrame:
 # if __name__ == '__main__':
 #     # Main function that returns a list of possible words
 #     green_letter = 'CRA'
-#     green_positions = [1,2,3]
+#     green_positions = [1, 2, 3]
 #     yellow_letter = ''
 #     yellow_positions = []
-#     bad_letter = 'NE'
+#     bad_letter = 'NESTIK'
 
 #     # Main function that returns a list of possible words
 #     main(green_letter, green_positions, yellow_letter, yellow_positions, bad_letter)
