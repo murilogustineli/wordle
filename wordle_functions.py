@@ -30,7 +30,7 @@ def find_words(words: list,
     green_letter_positions = np.array(green_letter_positions) - 1
     yellow_letter_positions = np.array(yellow_letter_positions) - 1
 
-    # Iterate over each word in Wordle
+    # Iterate over each word in Wordle list
     for w in range(len(words)):
         # Check words that do not have bad_letters and have yellow_letters
         if not any(let in words[w] for let in bad_letters) and all(let in words[w] for let in yellow_letters):
