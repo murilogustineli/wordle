@@ -71,7 +71,7 @@ def main(green_letters: str,
          green_letter_positions: list,
          yellow_letters: str,
          yellow_letter_positions: list,
-         bad_letters: str) -> print():
+         bad_letters: str) -> list:
     """
     Function takes  5 arguments:
     1. green_letters --> string that represents green letters in wordle guess
@@ -91,12 +91,38 @@ def main(green_letters: str,
     bad_letters = bad_letters.lower()
 
     # Print list of possible words
-    return print(find_words(words,
-                            green_letters=green_letters,
-                            yellow_letters=yellow_letters,
-                            bad_letters=bad_letters,
-                            green_letter_positions=green_letter_positions,
-                            yellow_letter_positions=yellow_letter_positions))
+    return find_words(words,
+                      green_letters=green_letters,
+                      yellow_letters=yellow_letters,
+                      bad_letters=bad_letters,
+                      green_letter_positions=green_letter_positions,
+                      yellow_letter_positions=yellow_letter_positions)
+
+
+# Function that returns most repetitive letters
+def repetitive_letters(word_list) -> pd.DataFrame:
+    """
+    Takes the possible word list from find_words() function and returns the most repetitive letters
+    :param word_list: list of possible words from find_words() function
+    :return: dictionary of letters in word_list and their count
+    """
+    let_dic = {}
+    for word in word_list:
+        for i in word:
+            if i in let_dic:
+                let_dic[i] += 1
+            else:
+                let_dic[i] = 1
+
+    # Convert to upper case
+    let_dic = {k.upper(): v for k, v in let_dic.items()}
+    sorted_dic = dict(sorted(let_dic.items(), key=lambda x: x[1], reverse=True))
+
+    # Convert to Pandas DataFrame
+    data = {'Letters': sorted_dic.keys(), 'Count':sorted_dic.values()}
+    df = pd.DataFrame(data)
+
+    return df
 
 
 # Function to load the ranking data
@@ -202,11 +228,13 @@ def set_score(m_score, b_score, draw) -> pd.DataFrame:
 # # Call main function
 # if __name__ == '__main__':
 #     # Main function that returns a list of possible words
-#     green_letter = 'CRA'
-#     green_positions = [1, 2, 3]
-#     yellow_letter = ''
-#     yellow_positions = []
-#     bad_letter = 'NESTIK'
+#     green_letter = ''
+#     green_positions = []
+#     yellow_letter = 'ANEL'
+#     yellow_positions = [3, 4, 5, 4]
+#     bad_letter = 'CRK'
 
 #     # Main function that returns a list of possible words
-#     main(green_letter, green_positions, yellow_letter, yellow_positions, bad_letter)
+#     words = main(green_letter, green_positions, yellow_letter, yellow_positions, bad_letter)
+#     let_dict = repetitive_letters(word_list=words)
+#     print(let_dict)
