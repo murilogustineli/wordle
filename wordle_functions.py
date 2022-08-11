@@ -81,7 +81,7 @@ def main(green_letters: str,
     5. bad_letters --> string that represents gray letters in wordle guess
     """
     # Load words list
-    words = load_words(file_path="wordle-answers-alphabetical.txt")
+    words_list = load_words(file_path="wordle-answers-alphabetical.txt")
 
     # Variables
     green_letters = green_letters.lower()
@@ -91,7 +91,7 @@ def main(green_letters: str,
     bad_letters = bad_letters.lower()
 
     # Print list of possible words
-    return find_words(words,
+    return find_words(words_list,
                       green_letters=green_letters,
                       yellow_letters=yellow_letters,
                       bad_letters=bad_letters,
@@ -100,14 +100,14 @@ def main(green_letters: str,
 
 
 # Function that returns most repetitive letters
-def repetitive_letters(word_list) -> pd.DataFrame:
+def repetitive_letters(wordle_list) -> pd.DataFrame:
     """
     Takes the possible word list from find_words() function and returns the most repetitive letters
-    :param word_list: list of possible words from find_words() function
+    :param wordle_list: list of possible words from find_words() function
     :return: dictionary of letters in word_list and their count
     """
     let_dic = {}
-    for word in word_list:
+    for word in wordle_list:
         for i in word:
             if i in let_dic:
                 let_dic[i] += 1
@@ -119,7 +119,7 @@ def repetitive_letters(word_list) -> pd.DataFrame:
     sorted_dic = dict(sorted(let_dic.items(), key=lambda x: x[1], reverse=True))
 
     # Convert to Pandas DataFrame
-    data = {'Letters': sorted_dic.keys(), 'Count':sorted_dic.values()}
+    data = {'Letters': sorted_dic.keys(), 'Count': sorted_dic.values()}
     df = pd.DataFrame(data)
 
     return df
@@ -235,6 +235,6 @@ def set_score(m_score, b_score, draw) -> pd.DataFrame:
 #     bad_letter = 'CRK'
 
 #     # Main function that returns a list of possible words
-#     words = main(green_letter, green_positions, yellow_letter, yellow_positions, bad_letter)
-#     let_dict = repetitive_letters(word_list=words)
-#     print(let_dict)
+#     word_list = main(green_letter, green_positions, yellow_letter, yellow_positions, bad_letter)
+#     letters_df = repetitive_letters(wordle_list=word_list)
+#     print(letters_df.to_string(index=False))
