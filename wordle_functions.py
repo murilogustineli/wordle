@@ -145,9 +145,10 @@ def score() -> pd.DataFrame:
     # Load data
     data = load_data(file_name='wordle_ranking.csv')
 
-    # Filter for Murilo and Barbara rows
+    # Filter for Murilo, Barbara, and Draw rows
     m_df = data[data['Names'] == 'Murilo'].copy()
     b_df = data[data['Names'] == 'Barbara'].copy()
+    d_df = data[data['Names'] == 'Draw'].copy()
 
     # Select winner
     winner = input("Who won the game? Murilo, Barbara, or Draw? \
@@ -162,11 +163,10 @@ def score() -> pd.DataFrame:
     elif winner == 'B'.lower():
         b_df['Games_Won'] = b_df['Games_Won'] + 1
     elif winner == 'D'.lower():
-        b_df['Draw'] = b_df['Draw'] + 1
-        m_df['Draw'] = m_df['Draw'] + 1
+        d_df['Games_Won'] = d_df['Games_Won'] + 1
 
     # Convert into DataFrame
-    frames = [m_df, b_df]
+    frames = [m_df, b_df, d_df]
     df = pd.concat(frames)
 
     # Write DF to CSV
@@ -180,12 +180,12 @@ def reset_score() -> (str, pd.DataFrame):
     """
     Function that resets the score.
     Enter 'y' to reset the score
-    Enter 'n' to not reset the score
+    Enter 'n' to NOT reset the score
     """
     reset = input('Would you like to reset the ranking? [y/n]')
     if reset == 'y':
-        data = [['Murilo', 0, 0], ['Barbara', 0, 0]]
-        df = pd.DataFrame(data, columns=['Names', 'Games_Won', 'Draw'])
+        data = [['Murilo', 0], ['Barbara', 0], ['Draw', 0]]
+        df = pd.DataFrame(data, columns=['Names', 'Games_Won'])
         df.to_csv('wordle_ranking.csv', index=False)
     else:
         return 'Ranking is not reset'
@@ -194,29 +194,28 @@ def reset_score() -> (str, pd.DataFrame):
 
 
 # Function that sets a custom score
-def set_score(m_score, b_score, draw) -> pd.DataFrame:
+def set_score(m_score, b_score, draw_score) -> pd.DataFrame:
     """
     Function that sets a custom score for both people.
     m_score --> Murilo's score
     b_score --> Barbara's score
-    draw --> Draw
+    draw_score --> Draw score
     """
     # Load DataFrame
     data = load_data(file_name='wordle_ranking.csv')
 
-    # Set draw score
-    data['Draw'] = draw
-
     # Filter for Murilo and Barbara rows
     m_df = data[data['Names'] == 'Murilo'].copy()
     b_df = data[data['Names'] == 'Barbara'].copy()
+    d_df = data[data['Names'] == 'Draw'].copy()
 
     # Set new score
     m_df['Games_Won'] = m_score
     b_df['Games_Won'] = b_score
+    d_df['Games_Won'] = draw_score
 
     # Convert into DataFrame
-    frames = [m_df, b_df]
+    frames = [m_df, b_df, d_df]
     df = pd.concat(frames)
 
     # Write DF to CSV
