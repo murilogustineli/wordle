@@ -102,7 +102,7 @@ def main(green_letters: str,
 # Function that returns most repetitive letters
 def repetitive_letters(wordle_list) -> pd.DataFrame:
     """
-    Takes the possible word list from find_words() function and returns the most repetitive letters
+    Takes the possible word list from find_words() function and returns a DataFrame of the most repetitive letters
     :param wordle_list: list of possible words from find_words() function
     :return: dictionary of letters in word_list and their count
     """
