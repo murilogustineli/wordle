@@ -236,4 +236,5 @@ def set_score(m_score, b_score, draw_score) -> pd.DataFrame:
 #     # Main function that returns a list of possible words
 #     word_list = main(green_letter, green_positions, yellow_letter, yellow_positions, bad_letter)
 #     letters_df = repetitive_letters(wordle_list=word_list)
+#     print(f"Word list: {word_list}")
 #     print(letters_df.to_string(index=False))
