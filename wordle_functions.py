@@ -106,17 +106,17 @@ def repetitive_letters(wordle_list) -> pd.DataFrame:
     :param wordle_list: list of possible words from find_words() function
     :return: dictionary of letters in word_list and their count
     """
-    let_dic = {}
+    letter_dic = {}
     for word in wordle_list:
         for i in word:
-            if i in let_dic:
-                let_dic[i] += 1
+            if i in letter_dic:
+                letter_dic[i] += 1
             else:
-                let_dic[i] = 1
+                letter_dic[i] = 1
 
     # Convert to upper case
-    let_dic = {k.upper(): v for k, v in let_dic.items()}
-    sorted_dic = dict(sorted(let_dic.items(), key=lambda x: x[1], reverse=True))
+    letter_dic = {k.upper(): v for k, v in letter_dic.items()}
+    sorted_dic = dict(sorted(letter_dic.items(), key=lambda x: x[1], reverse=True))
 
     # Convert to Pandas DataFrame
     data = {'Letters': sorted_dic.keys(), 'Count': sorted_dic.values()}
