@@ -238,3 +238,47 @@ def set_score(m_score, b_score, draw_score) -> pd.DataFrame:
 #     letters_df = repetitive_letters(wordle_list=word_list)
 #     print(f"Word list: {word_list}")
 #     print(letters_df.to_string(index=False))
+
+
+# Convert JSON to CSV
+import json
+import csv
+
+def open_json(file_name: str) -> list:
+    # Opening JSON file and loading the data into the variable data
+    with open(file_name) as json_file:
+        data = json.load(json_file)
+    return data
+
+def convert_json_csv(data: list, download=False) -> pd.DataFrame:
+    dic = {}
+    
+    # Loop through list and convert to dictionary
+    for row in data:  # iterate every row
+        for key in row:
+            if type(row[key]) != dict:  # if key is not a dictionary type object
+                if key not in dic.keys():  # if key not in dictionary
+                    dic[key] = [row[key]]
+                else:
+                    dic[key].append(row[key])  # add element to dictionary key
+            else:
+                for ele in row[key]:  # iterate nested dictionary
+                    sub_dic = row[key]
+                    if ele not in dic.keys():  # if key is not in dictionary
+                        dic[ele] = [sub_dic[ele]]
+                    else:
+                        dic[ele].append(sub_dic[ele])  # add element to dictionary key
+    
+    # Convert dictionary to pandas DF
+    df = pd.DataFrame(dic)
+    
+    # Download CSV
+    if download:
+        df.to_csv("output.csv")
+    
+    return df
+
+# Call functions
+data = open_json(file_name="data.json")
+df = convert_json_csv(data=data, download=False)
+display(df)
