@@ -1,2 +1,2 @@
 # Wordle
-Python program to play wordle $w_0$ 
+Python program to play wordle
