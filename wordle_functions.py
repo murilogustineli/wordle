@@ -176,7 +176,7 @@ def score() -> pd.DataFrame:
 
 
 # Function that resets the score
-def reset_score() -> (str, pd.DataFrame):
+def reset_score() -> (pd.DataFrame):
     """
     Function that resets the score.
     Enter 'y' to reset the score
