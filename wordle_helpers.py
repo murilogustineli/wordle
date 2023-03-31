@@ -71,7 +71,9 @@ def main(green_letters: str,
          green_letter_positions: list,
          yellow_letters: str,
          yellow_letter_positions: list,
-         bad_letters: str) -> list:
+         bad_letters: str,
+         wordle_list_path="wordle-answers",
+    ) -> list:
     """
     Function takes  5 arguments:
     1. green_letters --> string that represents green letters in wordle guess
@@ -79,9 +81,10 @@ def main(green_letters: str,
     3. yellow_letters --> string that represents yellow letters in wordle guess
     4. yellow_letter_positions --> list of the positions of the yellow_letters ranging from 1 to 5
     5. bad_letters --> string that represents gray letters in wordle guess
+    6. word_list_path --> string of the file name of the list of words
     """
     # Load words list
-    words_list = load_words(file_path="wordle-answers-alphabetical.txt")
+    words_list = load_words(file_path=f"{wordle_list_path}.txt")
 
     # Variables
     green_letters = green_letters.lower()
