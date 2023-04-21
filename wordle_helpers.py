@@ -16,12 +16,14 @@ def load_words(file_path) -> list:
 
 
 # Function to find words in list of possible words in Wordle
-def find_words(words: list,
-               green_letters: str,
-               green_letter_positions: list,
-               yellow_letters: str,
-               yellow_letter_positions: list,
-               bad_letters: str) -> list:
+def find_words(
+        words: list,
+        green_letters: str,
+        green_letter_positions: list,
+        yellow_letters: str,
+        yellow_letter_positions: list,
+        bad_letters: str,
+    ) -> list:
     # List of possible words
     possible_words = []
     final_words = []
@@ -67,12 +69,13 @@ def find_words(words: list,
 
 
 # Main function that returns a list of possible words
-def main(green_letters: str,
-         green_letter_positions: list,
-         yellow_letters: str,
-         yellow_letter_positions: list,
-         bad_letters: str,
-         wordle_list_path="wordle-answers",
+def main(
+        green_letters: str,
+        green_letter_positions: list,
+        yellow_letters: str,
+        yellow_letter_positions: list,
+        bad_letters: str,
+        wordle_list_path="wordle-answers",
     ) -> list:
     """
     Function takes  5 arguments:
