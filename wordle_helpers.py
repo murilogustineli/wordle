@@ -137,6 +137,7 @@ def load_data(file_name='wordle_ranking.csv') -> pd.DataFrame:
     Function that loads the CSV file storing the score for each person
     """
     df = pd.read_csv(file_name, index_col=False)
+    df['Games_Won'] = df['Games_Won'].astype(int)
     return df
 
 
