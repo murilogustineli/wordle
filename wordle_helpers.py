@@ -97,12 +97,14 @@ def main(
     bad_letters = bad_letters.lower()
 
     # Print list of possible words
-    return find_words(words_list,
-                      green_letters=green_letters,
-                      yellow_letters=yellow_letters,
-                      bad_letters=bad_letters,
-                      green_letter_positions=green_letter_positions,
-                      yellow_letter_positions=yellow_letter_positions)
+    return find_words(
+        words_list,
+        green_letters=green_letters,
+        yellow_letters=yellow_letters,
+        bad_letters=bad_letters,
+        green_letter_positions=green_letter_positions,
+        yellow_letter_positions=yellow_letter_positions
+    )
 
 
 # Function that returns most repetitive letters
