@@ -1100,6 +1100,7 @@ lapel
 lapse
 large
 larva
+laser
 lasso
 latch
 later
