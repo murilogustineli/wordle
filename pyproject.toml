@@ -1,0 +1,23 @@
+[project]
+name = "wordle"
+version = "0.0.1"
+authors = [{ name = "Murilo Gustineli", email = "murilogustineli@gmail.com" }]
+description = "Wordle helper package"
+readme = "README.md"
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/murilogustineli/wordle"
+Issues = "https://github.com/murilogustineli/wordle/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+dependencies = { file = "requirements.txt" }
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["wordle"]
+namespaces = false

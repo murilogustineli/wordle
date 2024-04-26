@@ -12,10 +12,17 @@ class Wordle:
         self,
     ):
         self.words = None
+        self.wordle_ranking = "/Users/mgustine/github/wordle/wordle/wordle_ranking.csv"
+        self.wordle_answers_path = (
+            "/Users/mgustine/github/wordle/wordle/wordle-answers.txt"
+        )
+        self.wordle_possible_path = (
+            "/Users/mgustine/github/wordle/wordle/wordle-possible-words.txt"
+        )
 
     # Function to load words text file and return a list of words
     @staticmethod
-    def load_words(file_path="wordle-answers.txt") -> list:
+    def load_words(file_path: str) -> list:
         my_file = open(file_path, "r")
         content = my_file.read()
         words = content.split("\n")
@@ -46,9 +53,9 @@ class Wordle:
 
         # Get list of words
         if answer_word_list:
-            words = self.load_words(file_path="wordle-answers.txt")
+            words = self.load_words(file_path=self.wordle_answers_path)
         else:
-            words = self.load_words(file_path="wordle-possible-words.txt")
+            words = self.load_words(file_path=self.wordle_possible_path)
 
         # Convert letters to sets for efficient checking
         set_yellow_letters = set(yellow_letters)
@@ -107,11 +114,12 @@ class Wordle:
         return df
 
     # Function to load the ranking data
-    def load_data(self, file_name="wordle_ranking.csv") -> pd.DataFrame:
+    def load_data(self) -> pd.DataFrame:
         """
         Function that loads the CSV file storing the score for each person
         """
-        df = pd.read_csv(file_name, index_col=False)
+
+        df = pd.read_csv(self.wordle_ranking, index_col=False)
         df["Games_Won"] = df["Games_Won"].astype(int)
         return df
 
@@ -126,7 +134,7 @@ class Wordle:
         3. Draw; no winners --> 'D'
         """
         # Load data
-        data = self.load_data(file_name="wordle_ranking.csv")
+        data = self.load_data()
 
         # Filter for Murilo, Barbara, and Draw rows
         m_df = data[data["Names"] == "Murilo"].copy()
@@ -155,7 +163,7 @@ class Wordle:
         df = pd.concat(frames)
 
         # Write DF to CSV
-        df.to_csv("wordle_ranking.csv", index=False)
+        df.to_csv(self.wordle_ranking, index=False)
         return df
 
     # Function that resets the score
@@ -169,7 +177,7 @@ class Wordle:
         if reset == "y":
             data = [["Murilo", 0], ["Barbara", 0], ["Draw", 0]]
             df = pd.DataFrame(data, columns=["Names", "Games_Won"])
-            df.to_csv("wordle_ranking.csv", index=False)
+            df.to_csv(self.wordle_ranking, index=False)
         else:
             return "Ranking is not reset"
 
@@ -184,7 +192,7 @@ class Wordle:
         draw_score --> Draw score
         """
         # Load DataFrame
-        data = self.load_data(file_name="wordle_ranking.csv")
+        data = self.load_data()
 
         # Filter for Murilo and Barbara rows
         m_df = data[data["Names"] == "Murilo"].copy()
@@ -201,5 +209,5 @@ class Wordle:
         df = pd.concat(frames)
 
         # Write DF to CSV
-        df.to_csv("wordle_ranking.csv", index=False)
+        df.to_csv(self.wordle_rankingk, index=False)
         return df
