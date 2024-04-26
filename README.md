@@ -2,7 +2,7 @@
 
 Python program to play wordle
 
-![wordle-banner](.images/wordle.jpg)
+![wordle-banner](/images/wordle.jpg)
 
 ## Quickstart
 
