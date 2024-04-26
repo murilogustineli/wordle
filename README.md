@@ -2,6 +2,8 @@
 
 Python program to play wordle
 
+![wordle-banner](.images/wordle.jpg)
+
 ## Quickstart
 
 Install the pre-commit hooks for formatting code:
