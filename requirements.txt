@@ -3,3 +3,8 @@ pandas
 matplotlib
 notebook
 ipykernel
+
+# developer tools
+jupyterlab
+black
+pre-commit

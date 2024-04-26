@@ -1,7 +1,6 @@
-# ignore venv
 *venv/
-
-# OS generated files #
-######################
-.DS_Store
-.DS_Store?
+*.egg-info/
+*/.DS_Store
+*.pyc
+__pycache__/
+build/

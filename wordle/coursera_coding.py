@@ -38,17 +38,17 @@ E.g.
 c = [0.91, 0.88, 0.80, 0.51, 0.42]
 d = [0.83, 0.79, 0.77, 0.56, 0,43, 0.40]
 
-where 
+where
 - element in each array represent the ranking score of a unique content for that content type. Score is normalized between 0-1
-- element's index represents the unique content id 
+- element's index represents the unique content id
 - a unique content can be represented in the form of a string "contenttype-index".
-In the above example, for courses, we have course_1 with a ranking score 0.91, course_2 with a ranking score 0.88 and so on. 
+In the above example, for courses, we have course_1 with a ranking score 0.91, course_2 with a ranking score 0.88 and so on.
 For degree, we have degree_1 with a ranking score 0.83, degree_2 with a ranking score 0.79 and so on.
 
 Merge the course and degree ranking into one sorted array in descending order and return the content id `contenttype_index` for the sorted array. If there is a tie between course and degree, we prioritize course over degree
 
 Example 1:
-Input: 
+Input:
 c = [0.91, 0.88, 0.80, 0.79, 0.51, 0.42]
 d = [0.83, 0.79, 0.77, 0.56, 0.43, 0.40]
 Output:
