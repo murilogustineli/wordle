@@ -205,5 +205,5 @@ class Wordle:
         df = pd.concat(frames)
 
         # Write DF to CSV
-        df.to_csv(self.wordle_rankingk, index=False)
+        df.to_csv(self.wordle_ranking, index=False)
         return df
