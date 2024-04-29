@@ -19,9 +19,11 @@ class Wordle:
     # Function to load words text file and return a list of words
     @staticmethod
     def load_words(file_path: str) -> list:
-        my_file = open(file_path, "r")
-        content = my_file.read()
-        words = content.split("\n")
+        with open(file_path, "r") as file:
+            content = file.read()
+            words = content.split("\n")
+        if len(words[-1]) == 0:  # remove empty word after last word from
+            words.pop()
         return words
 
     # Function to find words in list of possible words in Wordle
