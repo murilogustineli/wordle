@@ -1,4 +1,6 @@
 # Import libraries
+import os
+
 import numpy as np
 import pandas as pd
 
@@ -8,13 +10,22 @@ class Wordle:
         self,
     ):
         self.words = None
-        self.wordle_ranking = "/Users/mgustine/github/wordle/wordle/wordle_ranking.csv"
-        self.wordle_answers_path = (
-            "/Users/mgustine/github/wordle/wordle/wordle-answers.txt"
+        self.project_root = self.get_project_root()
+        self.wordle_ranking = os.path.join(
+            self.project_root, "wordle", "wordle_ranking.csv"
         )
-        self.wordle_possible_path = (
-            "/Users/mgustine/github/wordle/wordle/wordle-possible-words.txt"
+        self.wordle_answers_path = os.path.join(
+            self.project_root, "wordle", "wordle-answers.txt"
         )
+        self.wordle_possible_path = os.path.join(
+            self.project_root, "wordle", "wordle-possible-words.txt"
+        )
+
+    # get the directory of the current file
+    def get_project_root(self):
+        curr_file_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.abspath(os.path.join(curr_file_dir, os.pardir))
+        return project_root
 
     # Function to load words text file and return a list of words
     @staticmethod
