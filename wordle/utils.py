@@ -220,3 +220,11 @@ class Wordle:
         # Write DF to CSV
         df.to_csv(self.wordle_ranking, index=False)
         return df
+
+    # Function that returns a commit message with updated scores
+    def get_commit_message(self):
+        score_df = self.load_data()
+        score = score_df["Games_Won"].tolist()
+        score_formatted = f"{score[0]}-{score[1]}-{score[2]}"
+        commit_msg = f'git commit -m "updated wordle {score_formatted}"'
+        return commit_msg
