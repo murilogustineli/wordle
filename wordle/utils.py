@@ -46,6 +46,18 @@ class Wordle:
         bad_letters: str,
         answer_word_list: bool = True,
     ) -> list:
+        """
+        Function that takes the green and yellow letters and their positions and returns a list of possible words
+        Args:
+            :param green_letters: string of green letters
+            :param green_letter_positions: list of green letter positions
+            :param yellow_letters: string of yellow letters
+            :param yellow_letter_positions: list of yellow letter positions
+            :param bad_letters: string of bad letters
+            :param answer_word_list: boolean to check if the possible words are the answer words
+        Returns:
+            :return: list of possible words
+        """
         # List of possible words
         possible_words = []
         final_words = []
