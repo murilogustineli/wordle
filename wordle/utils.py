@@ -1,4 +1,6 @@
+import math
 import os
+from collections import Counter
 
 import numpy as np
 import pandas as pd
@@ -8,16 +10,15 @@ class Wordle:
     def __init__(
         self,
     ):
-        self.words = None
-        self.project_root = self.get_project_root()
-        self.wordle_ranking = os.path.join(
-            self.project_root, "wordle", "wordle_ranking.csv"
+        self.PROJECT_ROOT = self.get_project_root()
+        self.ANSWERS_PATH = os.path.join(
+            self.PROJECT_ROOT, "wordle", "wordle-answers.txt"
         )
-        self.wordle_answers_path = os.path.join(
-            self.project_root, "wordle", "wordle-answers.txt"
+        self.POSSIBLE_WORDS_PATH = os.path.join(
+            self.PROJECT_ROOT, "wordle", "wordle-possible-words.txt"
         )
-        self.wordle_possible_path = os.path.join(
-            self.project_root, "wordle", "wordle-possible-words.txt"
+        self.RAKING_PATH = os.path.join(
+            self.PROJECT_ROOT, "wordle", "wordle_ranking.csv"
         )
 
     # get the directory of the current file
@@ -43,17 +44,17 @@ class Wordle:
         green_letter_positions: list,
         yellow_letters: str,
         yellow_letter_positions: list,
-        bad_letters: str,
+        gray_letters: str,
         answer_word_list: bool = True,
     ) -> list:
         """
         Function that takes the green and yellow letters and their positions and returns a list of possible words
         Args:
             :param green_letters: string of green letters
-            :param green_letter_positions: list of green letter positions
+            :param green_letter_positions: list of positions of green letters
             :param yellow_letters: string of yellow letters
-            :param yellow_letter_positions: list of yellow letter positions
-            :param bad_letters: string of bad letters
+            :param yellow_letter_positions: list of positions of yellow letters
+            :param gray_letters: string of bad letters
             :param answer_word_list: boolean to check if the possible words are the answer words
         Returns:
             :return: list of possible words
@@ -69,17 +70,17 @@ class Wordle:
         # Make all letters lower case
         green_letters = green_letters.lower()
         yellow_letters = yellow_letters.lower()
-        bad_letters = bad_letters.lower()
+        gray_letters = gray_letters.lower()
 
         # Get list of words
         if answer_word_list:
-            words = self.load_words(file_path=self.wordle_answers_path)
+            words = self.load_words(file_path=self.ANSWERS_PATH)
         else:
-            words = self.load_words(file_path=self.wordle_possible_path)
+            words = self.load_words(file_path=self.POSSIBLE_WORDS_PATH)
 
         # Convert letters to sets for efficient checking
         set_yellow_letters = set(yellow_letters)
-        set_bad_letters = set(bad_letters)
+        set_bad_letters = set(gray_letters)
 
         possible_words = []
         # Iterate over each word
@@ -89,9 +90,9 @@ class Wordle:
                 continue
 
             # Include words with yellow letters, but not at the specified positions
-            if set_yellow_letters <= set(word) and all(
-                word[pos] != yellow_letters[i]
-                for i, pos in enumerate(yellow_letter_positions)
+            if all(
+                (yellow_letter in word) and (word[pos] != yellow_letter)
+                for yellow_letter, pos in zip(yellow_letters, yellow_letter_positions)
             ):
                 possible_words.append(word)
 
@@ -100,24 +101,124 @@ class Wordle:
         if green_letters:
             for word in possible_words:
                 if all(
-                    word[pos] == green_letters[i]
-                    for i, pos in enumerate(green_letter_positions)
+                    word[pos] == green_letter
+                    for green_letter, pos in zip(green_letters, green_letter_positions)
                 ):
                     final_words.append(word)
         else:
             final_words = possible_words
         self.words = final_words
-        return final_words
+        self.LEN_WORDS = len(self.words)
+        print(f"Number of possible words: {self.LEN_WORDS}")
+
+    def simulate_feedback_pattern(self, word_played: str) -> dict:
+        """
+        Method to simulate the feedback pattern for a given word played.
+        Handles the cases if a letter appears multiple times in the guess word.
+        Args:
+            :param word_played: word played by the user
+        Returns:
+            :return: dictionary with the feedback pattern for each word
+        """
+        feedback_pattern = {}
+        for word in self.words:
+            pattern = []
+            secret_word_letters = list(word)
+            guess_letters = list(word_played)
+            # First pass for greens
+            for i in range(len(guess_letters)):
+                if guess_letters[i] == secret_word_letters[i]:
+                    pattern.append("green")
+                    secret_word_letters[i] = None  # Mark as used
+                    guess_letters[i] = None
+                else:
+                    pattern.append(None)
+            # Second pass for yellows and grays
+            for i in range(len(guess_letters)):
+                if guess_letters[i] is not None:
+                    if guess_letters[i] in secret_word_letters:
+                        pattern[i] = "yellow"
+                        secret_word_letters[
+                            secret_word_letters.index(guess_letters[i])
+                        ] = None
+                    else:
+                        pattern[i] = "gray"
+            feedback_pattern[word] = pattern
+        return feedback_pattern
+
+    # calculate probabilities of feedback pattern
+    def calculate_probabilities(self, feedback_patern) -> dict:
+        # count the number of each feedback pattern
+        list_counts = Counter(tuple(lst) for lst in feedback_patern.values())
+        # calculate the probabilities of each feedback pattern
+        probabilities = {}
+        for key, value in list_counts.items():
+            probabilities[key] = value / self.LEN_WORDS
+        return probabilities
+
+    # calculate the entropy of the probabilities
+    def compute_entropy(self, probabilities: dict) -> float:
+        entropy = 0
+        for prob in probabilities.values():
+            entropy += -prob * math.log2(prob)
+        return entropy
+
+    # compute entropy for all words
+    def compute_entropy_words(self):
+        words_entropy = {}
+        potential_words = self.load_words(self.POSSIBLE_WORDS_PATH)
+        if self.LEN_WORDS <= 10:  # You can adjust the threshold as needed
+            # Use remaining possible words as potential guesses
+            potential_words = self.words
+        # # Use the only word left
+        # elif self.LEN_WORDS == 1:
+        #     potential_words = self.words
+        for guess_word in potential_words:
+            feedback_patern = self.simulate_feedback_pattern(guess_word)
+            probabilities = self.calculate_probabilities(feedback_patern)
+            entropy = self.compute_entropy(probabilities)
+            words_entropy[guess_word] = entropy
+        # Order the words by entropy in descending order
+        words_entropy = dict(
+            sorted(words_entropy.items(), key=lambda item: item[1], reverse=True)
+        )
+        # Get top 10 words with the highest entropy
+        top_entropy_words = dict(list(words_entropy.items())[:10])
+        self.top_entropy_words = top_entropy_words
+
+    def compute_letter_frequencies(self) -> Counter:
+        letter_counts = Counter()
+        for word in self.words:
+            letter_counts.update(
+                set(word)
+            )  # Use set to avoid counting duplicate letters
+        return letter_counts
+
+    def choose_word_to_play(self):
+        letter_frequencies = self.compute_letter_frequencies()
+        words_scores = {}
+        for word, entropy in self.top_entropy_words.items():
+            # calculate the frequency score for the word
+            frequency_score = sum(letter_frequencies[char] for char in set(word))
+            # combine entropy and frequence score
+            combined_score = entropy * frequency_score
+            words_scores[word] = combined_score
+        # sort words based on the combined score in descending order
+        sorted_words = dict(
+            sorted(words_scores.items(), key=lambda item: item[1], reverse=True)
+        )
+        for key, val in sorted_words.items():
+            print(key, val)
 
     # Function that returns most repetitive letters
-    def repetitive_letters(self, wordle_list) -> pd.DataFrame:
+    def repetitive_letters(self) -> pd.DataFrame:
         """
         Takes the possible word list from find_words() function and returns a DataFrame of the most repetitive letters
         :param wordle_list: list of possible words from find_words() function
         :return: dictionary of letters in word_list and their count
         """
         letter_dic = {}
-        for word in wordle_list:
+        for word in self.words:
             for i in word:
                 if i in letter_dic:
                     letter_dic[i] += 1
@@ -139,7 +240,7 @@ class Wordle:
         Function that loads the CSV file storing the score for each person
         """
 
-        df = pd.read_csv(self.wordle_ranking, index_col=False)
+        df = pd.read_csv(self.RAKING_PATH, index_col=False)
         df["Games_Won"] = df["Games_Won"].astype(int)
         return df
 
@@ -183,7 +284,7 @@ class Wordle:
         df = pd.concat(frames)
 
         # Write DF to CSV
-        df.to_csv(self.wordle_ranking, index=False)
+        df.to_csv(self.RAKING_PATH, index=False)
         return df
 
     # Function that resets the score
@@ -197,10 +298,9 @@ class Wordle:
         if reset == "y":
             data = [["Murilo", 0], ["Barbara", 0], ["Draw", 0]]
             df = pd.DataFrame(data, columns=["Names", "Games_Won"])
-            df.to_csv(self.wordle_ranking, index=False)
+            df.to_csv(self.RANKING_PATH, index=False)
         else:
             return "Ranking is not reset"
-
         return df
 
     # Function that sets a custom score
@@ -229,7 +329,7 @@ class Wordle:
         df = pd.concat(frames)
 
         # Write DF to CSV
-        df.to_csv(self.wordle_ranking, index=False)
+        df.to_csv(self.RANKING_PATH, index=False)
         return df
 
     # Function that returns a commit message with updated scores
