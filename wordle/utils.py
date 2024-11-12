@@ -195,7 +195,11 @@ class Wordle:
         return letter_counts
 
     def choose_word_to_play(self):
+        # compute the entropy of the words
+        self.compute_entropy_words()
+        # compute the frequency of each letter in the words
         letter_frequencies = self.compute_letter_frequencies()
+        # compute the score of each word
         words_scores = {}
         for word, entropy in self.top_entropy_words.items():
             # calculate the frequency score for the word
