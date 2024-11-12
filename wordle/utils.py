@@ -90,9 +90,9 @@ class Wordle:
                 continue
 
             # Include words with yellow letters, but not at the specified positions
-            if all(
-                (yellow_letter in word) and (word[pos] != yellow_letter)
-                for yellow_letter, pos in zip(yellow_letters, yellow_letter_positions)
+            if set_yellow_letters <= set(word) and all(
+                word[pos] != yellow_letters[i]
+                for i, pos in enumerate(yellow_letter_positions)
             ):
                 possible_words.append(word)
 
@@ -110,6 +110,7 @@ class Wordle:
         self.words = final_words
         self.LEN_WORDS = len(self.words)
         print(f"Number of possible words: {self.LEN_WORDS}")
+        return final_words
 
     def simulate_feedback_pattern(self, word_played: str) -> dict:
         """
@@ -164,10 +165,10 @@ class Wordle:
         return entropy
 
     # compute entropy for all words
-    def compute_entropy_words(self):
+    def compute_entropy_words(self, word_threshold: int = 10):
         words_entropy = {}
         potential_words = self.load_words(self.POSSIBLE_WORDS_PATH)
-        if self.LEN_WORDS <= 10:  # adjust the threshold as needed
+        if self.LEN_WORDS <= word_threshold:  # adjust the threshold as needed
             # Use remaining possible words as potential guesses
             potential_words = self.words
         # # Use the only word left
@@ -194,9 +195,9 @@ class Wordle:
             )  # Use set to avoid counting duplicate letters
         return letter_counts
 
-    def choose_word_to_play(self):
+    def choose_word_to_play(self, word_threshold: int = 10):
         # compute the entropy of the words
-        self.compute_entropy_words()
+        self.compute_entropy_words(word_threshold)
         # compute the frequency of each letter in the words
         letter_frequencies = self.compute_letter_frequencies()
         # compute the score of each word
