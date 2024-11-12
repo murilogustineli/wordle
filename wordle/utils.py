@@ -167,7 +167,7 @@ class Wordle:
     def compute_entropy_words(self):
         words_entropy = {}
         potential_words = self.load_words(self.POSSIBLE_WORDS_PATH)
-        if self.LEN_WORDS <= 10:  # You can adjust the threshold as needed
+        if self.LEN_WORDS <= 10:  # adjust the threshold as needed
             # Use remaining possible words as potential guesses
             potential_words = self.words
         # # Use the only word left
