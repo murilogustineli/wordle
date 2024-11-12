@@ -33,7 +33,7 @@ class Wordle:
         with open(file_path, "r") as file:
             content = file.read()
             words = content.split("\n")
-        if len(words[-1]) == 0:  # remove empty word after last word from
+        if len(words[-1]) == 0:  # remove empty word after last word from the list
             words.pop()
         return words
 
@@ -112,6 +112,7 @@ class Wordle:
         print(f"Number of possible words: {self.LEN_WORDS}")
         return final_words
 
+    # function to simulate feedback pattern
     def simulate_feedback_pattern(self, word_played: str) -> dict:
         """
         Method to simulate the feedback pattern for a given word played.
@@ -148,7 +149,7 @@ class Wordle:
         return feedback_pattern
 
     # calculate probabilities of feedback pattern
-    def calculate_probabilities(self, feedback_patern) -> dict:
+    def calculate_probabilities(self, feedback_patern: dict) -> dict:
         # count the number of each feedback pattern
         list_counts = Counter(tuple(lst) for lst in feedback_patern.values())
         # calculate the probabilities of each feedback pattern
@@ -171,9 +172,7 @@ class Wordle:
         if self.LEN_WORDS <= word_threshold:  # adjust the threshold as needed
             # Use remaining possible words as potential guesses
             potential_words = self.words
-        # # Use the only word left
-        # elif self.LEN_WORDS == 1:
-        #     potential_words = self.words
+
         for guess_word in potential_words:
             feedback_patern = self.simulate_feedback_pattern(guess_word)
             probabilities = self.calculate_probabilities(feedback_patern)
@@ -187,6 +186,7 @@ class Wordle:
         top_entropy_words = dict(list(words_entropy.items())[:10])
         self.top_entropy_words = top_entropy_words
 
+    # compute the frequency of each letter in the words
     def compute_letter_frequencies(self) -> Counter:
         letter_counts = Counter()
         for word in self.words:
@@ -195,6 +195,7 @@ class Wordle:
             )  # Use set to avoid counting duplicate letters
         return letter_counts
 
+    # choose the word to play
     def choose_word_to_play(self, word_threshold: int = 10):
         # compute the entropy of the words
         self.compute_entropy_words(word_threshold)
