@@ -22,7 +22,8 @@ class Wordle:
         )
 
     # get the directory of the current file
-    def get_project_root(self):
+    @staticmethod
+    def get_project_root():
         curr_file_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.abspath(os.path.join(curr_file_dir, os.pardir))
         return project_root
@@ -59,10 +60,6 @@ class Wordle:
         Returns:
             :return: list of possible words
         """
-        # List of possible words
-        possible_words = []
-        final_words = []
-
         # Subtract 1 from every value in green and yellow letter positions
         green_letter_positions = np.array(green_letter_positions) - 1
         yellow_letter_positions = np.array(yellow_letter_positions) - 1
