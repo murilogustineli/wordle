@@ -4,13 +4,10 @@ from collections import Counter
 
 import numpy as np
 import pandas as pd
-from pandas import DataFrame
 
 
 class Wordle:
-    def __init__(
-        self,
-    ):
+    def __init__(self):
         self.words = None
         self.top_entropy_words = None
         self.LEN_WORDS = None
@@ -152,6 +149,13 @@ class Wordle:
 
     # calculate probabilities of feedback pattern
     def calculate_probabilities(self, feedback_pattern: dict) -> dict:
+        """
+        Method to calculate the probabilities of each feedback pattern.
+        Args:
+            :param feedback_pattern: dictionary with the feedback pattern for each word
+        Returns:
+            :return: dictionary with the probabilities of each feedback pattern
+        """
         # count the number of each feedback pattern
         list_counts = Counter(tuple(lst) for lst in feedback_pattern.values())
         # calculate the probabilities of each feedback pattern
@@ -169,7 +173,12 @@ class Wordle:
         return entropy
 
     # compute entropy for all words
-    def compute_entropy_words(self, word_threshold: int = 10):
+    def compute_entropy_words(self, word_threshold: int = 10) -> None:
+        """
+        Method to compute the entropy of all possible words.
+        Args:
+            :param word_threshold: threshold to consider the number of possible words
+        """
         words_entropy = {}
         potential_words = self.load_words(self.POSSIBLE_WORDS_PATH)
         if self.LEN_WORDS <= word_threshold:  # adjust the threshold as needed
@@ -199,7 +208,12 @@ class Wordle:
         return letter_counts
 
     # choose the word to play
-    def choose_word_to_play(self, word_threshold: int = 10):
+    def choose_word_to_play(self, word_threshold: int = 10) -> None:
+        """
+        Method to choose the word to play based on the entropy and frequency of the letters.
+        Args:
+            :param word_threshold: threshold to consider the number of possible words
+        """
         # compute the entropy of the words
         self.compute_entropy_words(word_threshold)
         # compute the frequency of each letter in the words
@@ -222,8 +236,8 @@ class Wordle:
     # Function that returns most repetitive letters
     def repetitive_letters(self) -> pd.DataFrame:
         """
-        Takes the possible word list from find_words() function and returns a DataFrame of the most repetitive letters
-        :return: dictionary of letters in word_list and their count
+        Takes the possible word list from find_words() method and returns a DataFrame of the most repetitive letters
+        :return df: DataFrame of the most repetitive letters
         """
         letter_dic = {}
         for word in self.words:
@@ -246,16 +260,14 @@ class Wordle:
     def load_data(self) -> pd.DataFrame:
         """
         Function that loads the CSV file storing the score for each person
+        :return df: DataFrame with the ranking data
         """
-
         df = pd.read_csv(self.RAKING_PATH, index_col=False)
         df["Games_Won"] = df["Games_Won"].astype(int)
         return df
 
     # Function to compute the score
-    def score(
-        self,
-    ) -> pd.DataFrame:
+    def score(self) -> pd.DataFrame:
         """
         Function that tracks the score for wordle. There are 3 possibilities:
         1. Murilo wins --> 'M'
@@ -273,10 +285,10 @@ class Wordle:
         # Select winner
         winner = input(
             "Who won the game? Murilo, Barbara, or Draw? \
-        \nEnter 'M' if Murilo won. \
-        \nEnter 'B' if Barbara won. \
-        \nEnter 'D' if it was a Draw. \
-        \nPlease enter [M/B/D]:"
+            \nEnter 'M' if Murilo won. \
+            \nEnter 'B' if Barbara won. \
+            \nEnter 'D' if it was a Draw. \
+            \nPlease enter [M/B/D]:"
         ).lower()
 
         # Add points to winner
@@ -296,7 +308,7 @@ class Wordle:
         return df
 
     # Function that resets the score
-    def reset_score(self) -> str | DataFrame:
+    def reset_score(self):
         """
         Function that resets the score.
         Enter 'y' to reset the score

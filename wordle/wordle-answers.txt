@@ -2185,6 +2185,7 @@ usual
 usurp
 utile
 utter
+uvula
 vague
 valet
 valid
