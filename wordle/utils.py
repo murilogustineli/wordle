@@ -209,7 +209,7 @@ class Wordle:
         for word, entropy in self.top_entropy_words.items():
             # calculate the frequency score for the word
             frequency_score = sum(letter_frequencies[char] for char in set(word))
-            # combine entropy and frequence score
+            # combine entropy and frequency score
             combined_score = entropy * frequency_score
             words_scores[word] = combined_score
         # sort words based on the combined score in descending order
