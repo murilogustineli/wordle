@@ -4,12 +4,17 @@ from collections import Counter
 
 import numpy as np
 import pandas as pd
+from pandas import DataFrame
 
 
 class Wordle:
     def __init__(
         self,
     ):
+        self.words = None
+        self.top_entropy_words = None
+        self.LEN_WORDS = None
+        self.RANKING_PATH = None
         self.PROJECT_ROOT = self.get_project_root()
         self.ANSWERS_PATH = os.path.join(
             self.PROJECT_ROOT, "wordle", "wordle-answers.txt"
@@ -146,9 +151,9 @@ class Wordle:
         return feedback_pattern
 
     # calculate probabilities of feedback pattern
-    def calculate_probabilities(self, feedback_patern: dict) -> dict:
+    def calculate_probabilities(self, feedback_pattern: dict) -> dict:
         # count the number of each feedback pattern
-        list_counts = Counter(tuple(lst) for lst in feedback_patern.values())
+        list_counts = Counter(tuple(lst) for lst in feedback_pattern.values())
         # calculate the probabilities of each feedback pattern
         probabilities = {}
         for key, value in list_counts.items():
@@ -156,7 +161,8 @@ class Wordle:
         return probabilities
 
     # calculate the entropy of the probabilities
-    def compute_entropy(self, probabilities: dict) -> float:
+    @staticmethod
+    def compute_entropy(probabilities: dict) -> float:
         entropy = 0
         for prob in probabilities.values():
             entropy += -prob * math.log2(prob)
@@ -171,8 +177,8 @@ class Wordle:
             potential_words = self.words
 
         for guess_word in potential_words:
-            feedback_patern = self.simulate_feedback_pattern(guess_word)
-            probabilities = self.calculate_probabilities(feedback_patern)
+            feedback_pattern = self.simulate_feedback_pattern(guess_word)
+            probabilities = self.calculate_probabilities(feedback_pattern)
             entropy = self.compute_entropy(probabilities)
             words_entropy[guess_word] = entropy
         # Order the words by entropy in descending order
@@ -217,7 +223,6 @@ class Wordle:
     def repetitive_letters(self) -> pd.DataFrame:
         """
         Takes the possible word list from find_words() function and returns a DataFrame of the most repetitive letters
-        :param wordle_list: list of possible words from find_words() function
         :return: dictionary of letters in word_list and their count
         """
         letter_dic = {}
@@ -291,7 +296,7 @@ class Wordle:
         return df
 
     # Function that resets the score
-    def reset_score(self) -> pd.DataFrame:
+    def reset_score(self) -> str | DataFrame:
         """
         Function that resets the score.
         Enter 'y' to reset the score
