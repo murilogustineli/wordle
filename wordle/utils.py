@@ -173,11 +173,16 @@ class Wordle:
         return entropy
 
     # compute entropy for all words
-    def compute_entropy_words(self, word_threshold: int = 10) -> None:
+    def compute_entropy_words(
+        self,
+        word_threshold: int = 10,
+        top_k_words: int = 10,
+    ) -> None:
         """
         Method to compute the entropy of all possible words.
         Args:
             :param word_threshold: threshold to consider the number of possible words
+            :param top_k_words: number of top words to consider
         """
         words_entropy = {}
         potential_words = self.load_words(self.POSSIBLE_WORDS_PATH)
@@ -195,7 +200,7 @@ class Wordle:
             sorted(words_entropy.items(), key=lambda item: item[1], reverse=True)
         )
         # Get top 10 words with the highest entropy
-        top_entropy_words = dict(list(words_entropy.items())[:10])
+        top_entropy_words = dict(list(words_entropy.items())[:top_k_words])
         self.top_entropy_words = top_entropy_words
 
     # compute the frequency of each letter in the words
@@ -208,14 +213,19 @@ class Wordle:
         return letter_counts
 
     # choose the word to play
-    def choose_word_to_play(self, word_threshold: int = 10) -> None:
+    def choose_word_to_play(
+        self,
+        word_threshold: int = 10,
+        top_k_words: int = 10,
+    ) -> None:
         """
         Method to choose the word to play based on the entropy and frequency of the letters.
         Args:
             :param word_threshold: threshold to consider the number of possible words
+            :param top_k_words: number of top words to consider
         """
         # compute the entropy of the words
-        self.compute_entropy_words(word_threshold)
+        self.compute_entropy_words(word_threshold, top_k_words)
         # compute the frequency of each letter in the words
         letter_frequencies = self.compute_letter_frequencies()
         # compute the score of each word
