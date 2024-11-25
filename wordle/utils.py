@@ -51,7 +51,7 @@ class Wordle:
         answer_word_list: bool = True,
     ) -> list:
         """
-        Function that takes the green and yellow letters and their positions and returns a list of possible words
+        Function that takes the green and yellow letters and their positions and returns a list of possible words.
         Args:
             :param green_letters: string of green letters
             :param green_letter_positions: list of positions of green letters
@@ -160,13 +160,20 @@ class Wordle:
         list_counts = Counter(tuple(lst) for lst in feedback_pattern.values())
         # calculate the probabilities of each feedback pattern
         probabilities = {}
-        for key, value in list_counts.items():
-            probabilities[key] = value / self.LEN_WORDS
+        for word, pattern_value in list_counts.items():
+            probabilities[word] = pattern_value / self.LEN_WORDS
         return probabilities
 
     # calculate the entropy of the probabilities
     @staticmethod
     def compute_entropy(probabilities: dict) -> float:
+        """
+        Method to compute the entropy of the probabilities.
+        Args:
+            :param probabilities: dictionary with the probabilities of each feedback pattern
+        Returns:
+            :return: entropy of the probabilities
+        """
         entropy = 0
         for prob in probabilities.values():
             entropy += -prob * math.log2(prob)
@@ -205,6 +212,11 @@ class Wordle:
 
     # compute the frequency of each letter in the words
     def compute_letter_frequencies(self) -> Counter:
+        """
+        Method to compute the frequency of each letter in the words.
+        Returns:
+            :return: Counter object with the frequency of each letter
+        """
         letter_counts = Counter()
         for word in self.words:
             letter_counts.update(
