@@ -51,7 +51,7 @@ class Wordle:
         answer_word_list: bool = True,
     ) -> list:
         """
-        Function that takes the green and yellow letters and their positions and returns a list of possible words.
+        Function that takes the green, yellow, ang gray letters and their positions and returns a list of possible words.
         Args:
             :param green_letters: string of green letters
             :param green_letter_positions: list of positions of green letters
@@ -60,7 +60,7 @@ class Wordle:
             :param gray_letters: string of bad letters
             :param answer_word_list: boolean to check if the possible words are the answer words
         Returns:
-            :return: list of possible words
+            :return final_words: list of possible words
         """
         # Subtract 1 from every value in green and yellow letter positions
         green_letter_positions = np.array(green_letter_positions) - 1
@@ -196,14 +196,12 @@ class Wordle:
         if self.LEN_WORDS <= word_threshold:  # adjust the threshold as needed
             # Use remaining possible words as potential guesses
             potential_words = self.words
-
         # compute the entropy for each word
         for guess_word in potential_words:
             feedback_pattern = self.simulate_feedback_pattern(guess_word)
             probabilities = self.calculate_probabilities(feedback_pattern)
             entropy = self.compute_entropy(probabilities)
             words_entropy[guess_word] = entropy
-
         # Order the words by entropy in descending order
         words_entropy = dict(
             sorted(words_entropy.items(), key=lambda item: item[1], reverse=True)
@@ -243,7 +241,6 @@ class Wordle:
         # compute the frequency of each letter in the words
         letter_frequencies = self.compute_letter_frequencies()
         # compute the score of each word
-
         words_scores = {}
         for word, entropy in self.top_entropy_words.items():
             # calculate the frequency score for the word
@@ -251,7 +248,6 @@ class Wordle:
             # combine entropy and frequency score
             combined_score = entropy * frequency_score
             words_scores[word] = combined_score
-
         # sort words based on the combined score in descending order
         sorted_words = dict(
             sorted(words_scores.items(), key=lambda item: item[1], reverse=True)
