@@ -289,7 +289,7 @@ class Wordle:
         return df
 
     # Function to compute the score
-    def score(self) -> pd.DataFrame:
+    def update_score(self) -> pd.DataFrame:
         """
         Function that tracks the score for wordle. There are 3 possibilities:
         1. Murilo wins --> 'M'
