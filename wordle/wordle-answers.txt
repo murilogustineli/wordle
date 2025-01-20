@@ -1901,6 +1901,7 @@ spurt
 squad
 squat
 squib
+squid
 stack
 staff
 stage
