@@ -253,7 +253,7 @@ class Wordle:
             sorted(words_scores.items(), key=lambda item: item[1], reverse=True)
         )
         for key, val in sorted_words.items():
-            print(key, round(val, 3))
+            print(key.upper(), round(val, 3))
 
     # Function that returns most repetitive letters
     def repetitive_letters(self) -> pd.DataFrame:
