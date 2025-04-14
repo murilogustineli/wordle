@@ -6,14 +6,26 @@ Python program to play wordle
 
 ## Quickstart
 
-Install the pre-commit hooks for formatting code:
+Install the `wordle` module in _"editable"_ mode, which means changes to the Python files will be immediately available without needing to reinstall the package.
+
+1. Install `uv`:
+   Install `uv` as the package manager for the project. Follow the [`uv` installation](https://docs.astral.sh/uv/getting-started/installation/) instructions for macOS, Linux, and Windows.
 
 ```bash
-pre-commit install
+# On macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# On Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-Install the package in "editable" mode, which means changes to the Python files will be immediately available without needing to reinstall the package.
+2. Create a virtual environment and install the package:
 
 ```bash
-pip install -e .
+# Create and activate a virtual environment
+uv venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install the package
+uv pip install -e .
 ```
