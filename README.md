@@ -6,7 +6,7 @@ Python program to play wordle
 
 ## Quickstart
 
-Install the `wordle` module in _"editable"_ mode, which means changes to the Python files will be immediately available without needing to reinstall the package.
+Install the `wordle` package in _"editable"_ mode, which means changes to the Python files will be immediately available without needing to reinstall the package.
 
 ### 1. Install `uv`:
 
@@ -27,6 +27,6 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 uv venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# Install the package
+# Install the wordle package
 uv pip install -e .
 ```
