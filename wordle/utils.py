@@ -10,7 +10,7 @@ class Wordle:
     def __init__(self):
         self.words = None
         self.top_entropy_words = None
-        self.LEN_WORDS = None
+        self.length_words = None
         self.RANKING_PATH = None
         self.PROJECT_ROOT = self.get_project_root()
         self.ANSWERS_PATH = os.path.join(
@@ -107,8 +107,8 @@ class Wordle:
         else:
             final_words = possible_words
         self.words = final_words
-        self.LEN_WORDS = len(self.words)
-        print(f"Number of possible words: {self.LEN_WORDS}")
+        self.length_words = len(self.words)
+        print(f"Number of possible words: {self.length_words}")
         return final_words
 
     # function to simulate feedback pattern
@@ -161,7 +161,7 @@ class Wordle:
         # calculate the probabilities of each feedback pattern
         probabilities = {}
         for word, pattern_value in list_counts.items():
-            probabilities[word] = pattern_value / self.LEN_WORDS
+            probabilities[word] = pattern_value / self.length_words
         return probabilities
 
     # calculate the entropy of the probabilities
@@ -193,7 +193,7 @@ class Wordle:
         """
         words_entropy = {}
         potential_words = self.load_words(self.POSSIBLE_WORDS_PATH)
-        if self.LEN_WORDS <= word_threshold:  # adjust the threshold as needed
+        if self.length_words <= word_threshold:  # adjust the threshold as needed
             # Use remaining possible words as potential guesses
             potential_words = self.words
         # compute the entropy for each word
@@ -252,8 +252,8 @@ class Wordle:
         sorted_words = dict(
             sorted(words_scores.items(), key=lambda item: item[1], reverse=True)
         )
-        for key, val in sorted_words.items():
-            print(key.upper(), round(val, 2))
+        for word, score in sorted_words.items():
+            print(word.upper(), round(score, 2))
 
     # Function that returns most repetitive letters
     def repetitive_letters(self) -> pd.DataFrame:
@@ -380,4 +380,9 @@ class Wordle:
         score = score_df["Games_Won"].tolist()
         score_formatted = f"{score[0]}-{score[1]}-{score[2]}"
         commit_msg = f'git commit -m "updated wordle {score_formatted}"'
+        if self.length_words == 1:
+            word = self.words[0].upper()
+            commit_msg = (
+                f'git commit -m "updated wordle {score_formatted}, word={word}"'
+            )
         return commit_msg
