@@ -30,3 +30,9 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 # Install the wordle package
 uv pip install -e .
 ```
+
+### 3. Install pre-commit hooks for formatting code
+
+```bash
+pre-commit install
+```
