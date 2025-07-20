@@ -15,6 +15,7 @@ dependencies = [
     "jupyterlab",
     "black",
     "pre-commit",
+    "torch>=2.5.1",
 ]
 
 [project.urls]
