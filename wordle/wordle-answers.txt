@@ -880,6 +880,7 @@ glyph
 gnash
 gnome
 godly
+gofer
 going
 golem
 golly
