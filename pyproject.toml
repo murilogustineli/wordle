@@ -16,6 +16,7 @@ dependencies = [
     "black",
     "pre-commit",
     "torch>=2.5.1",
+    "scikit-learn>=1.3.2",
 ]
 
 [project.urls]
