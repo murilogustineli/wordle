@@ -11,7 +11,6 @@ class Wordle:
         self.words = None
         self.top_entropy_words = None
         self.length_words = None
-        self.RANKING_PATH = None
         self.PROJECT_ROOT = self.get_project_root()
         self.ANSWERS_PATH = os.path.join(
             self.PROJECT_ROOT, "wordle", "wordle-answers.txt"
@@ -19,7 +18,7 @@ class Wordle:
         self.POSSIBLE_WORDS_PATH = os.path.join(
             self.PROJECT_ROOT, "wordle", "wordle-possible-words.txt"
         )
-        self.RAKING_PATH = os.path.join(
+        self.RANKING_PATH = os.path.join(
             self.PROJECT_ROOT, "wordle", "wordle_ranking.csv"
         )
 
@@ -284,7 +283,7 @@ class Wordle:
         Function that loads the CSV file storing the score for each person
         :return df: DataFrame with the ranking data
         """
-        df = pd.read_csv(self.RAKING_PATH, index_col=False)
+        df = pd.read_csv(self.RANKING_PATH, index_col=False)
         df["Games_Won"] = df["Games_Won"].astype(int)
         return df
 
@@ -326,7 +325,7 @@ class Wordle:
         df = pd.concat(frames)
 
         # Write DF to CSV
-        df.to_csv(self.RAKING_PATH, index=False)
+        df.to_csv(self.RANKING_PATH, index=False)
         return df
 
     # Function that resets the score
