@@ -2088,6 +2088,7 @@ tight
 tilde
 timer
 timid
+tinge
 tipsy
 titan
 tithe
