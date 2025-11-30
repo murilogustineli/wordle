@@ -1288,6 +1288,7 @@ mower
 mucky
 mucus
 muddy
+muggy
 mulch
 mummy
 munch
