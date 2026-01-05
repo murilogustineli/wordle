@@ -4,7 +4,7 @@ version = "0.0.1"
 authors = [{ name = "Murilo Gustineli", email = "murilogustineli@gmail.com" }]
 description = "Wordle helper package"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "numpy",
     "pandas",
