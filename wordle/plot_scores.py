@@ -39,7 +39,7 @@ def plot_scores():
     plt.grid(axis="y", linestyle="--", alpha=0.7)
 
     # Save the plot
-    output_path = os.path.join(game.PROJECT_ROOT, "wordle_scores.png")
+    output_path = os.path.join(game.PROJECT_ROOT, "images/wordle_scores.png")
     plt.savefig(output_path)
     print(f"Score plot saved to {output_path}")
 
