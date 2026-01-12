@@ -29,11 +29,11 @@ In Wordle, each guess provides feedback that narrows down the list of possible a
 
 4.  **Entropy Formula:**
 
-    $$
-    \text { Entropy }=-\sum_i p_i \log _2 p_i
-    $$
+$$
+\text { Entropy }=-\sum_i p_i \log _2 p_i
+$$
 
-    where $p_i$ is the probability of the $i$-th feedback pattern.
+where $p_i$ is the probability of the $i$-th feedback pattern.
 
 ## [wordle_solver.ipynb](wordle_solver.ipynb) and the `Wordle` Class
 
@@ -45,12 +45,12 @@ The core of the solver is the `Wordle` class in `wordle/utils.py`. Here's a brea
 
 1.  **Initialization**:
 
-    - When you create an instance of the `Wordle` class, it loads the lists of possible Wordle answers and all allowed guess words.
+- When you create an instance of the `Wordle` class, it loads the lists of possible Wordle answers and all allowed guess words.
 
 2.  **Filtering Words**:
 
-    - The `find_words()` method is used to filter the list of possible answers based on your guesses. You provide the green, yellow, and gray letters and their positions.
-    - This method narrows down the `words` attribute of the `Wordle` instance.
+- The `find_words()` method is used to filter the list of possible answers based on your guesses. You provide the green, yellow, and gray letters and their positions.
+- This method narrows down the `words` attribute of the `Wordle` instance.
 
 3.  **Calculating Entropy and Choosing the Next Word**:
     - The `choose_word_to_play()` method is the main entry point for getting a word suggestion.
