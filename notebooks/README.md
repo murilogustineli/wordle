@@ -30,10 +30,11 @@ In Wordle, each guess provides feedback that narrows down the list of possible a
 4.  **Entropy Formula:**
 
 $$
+\large
 \text { Entropy }=-\sum_i p_i \log _2 p_i
 $$
 
-where $p_i$ is the probability of the $i$-th feedback pattern.
+where $\large p_i$ is the probability of the $\large i$-th feedback pattern.
 
 ## [wordle_solver.ipynb](wordle_solver.ipynb) and the `Wordle` Class
 
