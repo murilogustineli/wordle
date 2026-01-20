@@ -17,7 +17,11 @@ dependencies = [
     "pre-commit",
     "torch>=2.5.1",
     "scikit-learn>=1.3.2",
+    "tabulate",
 ]
+
+[project.scripts]
+wordle = "wordle.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/murilogustineli/wordle"
