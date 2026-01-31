@@ -24,8 +24,8 @@ dependencies = [
 wordle = "wordle.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/murilogustineli/wordle"
-Issues = "https://github.com/murilogustineli/wordle/issues"
+Homepage = "https://github.com/mgustineli/wordle"
+Issues = "https://github.com/mgustineli/wordle/issues"
 
 [build-system]
 requires = ["setuptools>=61.0"]
