@@ -948,6 +948,7 @@ gulch
 gully
 gumbo
 gummy
+gunky
 guppy
 gusto
 gusty
@@ -1074,6 +1075,7 @@ juice
 juicy
 jumbo
 jumpy
+junky
 junta
 junto
 juror
