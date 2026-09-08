@@ -36,48 +36,43 @@ $$
 
 where $\large p_i$ is the probability of the $\large i$-th feedback pattern.
 
-## [wordle_solver.ipynb](wordle_solver.ipynb) and the `Wordle` Class
+## [wordle_solver.ipynb](wordle_solver.ipynb) and the `Solver` class
 
-This notebook demonstrates how to use the `Wordle` class from the `wordle.utils` module to get suggestions for the next best word to play in Wordle.
+This notebook is how the game is played day to day. It uses the `Solver` class from `wordle/solver.py` to suggest the next word and the `ScoreBoard` class from `wordle/scores.py` to record who won.
 
-### How the `Wordle` package works
-
-The core of the solver is the `Wordle` class in `wordle/utils.py`. Here's a breakdown of how it works:
+### How the `Solver` works
 
 1.  **Initialization**:
 
-- When you create an instance of the `Wordle` class, it loads the lists of possible Wordle answers and all allowed guess words.
+- Creating a `Solver` loads the two bundled word lists from `wordle/data`: the possible answers and every allowed guess.
 
 2.  **Filtering Words**:
 
-- The `find_words()` method is used to filter the list of possible answers based on your guesses. You provide the green, yellow, and gray letters and their positions.
-- This method narrows down the `words` attribute of the `Wordle` instance.
+- `find_words()` filters a word list by the green, yellow, and gray letters and their 1-indexed positions.
+- The result is stored on the `words` attribute. Gray letters that also appear as green or yellow are ignored, because Wordle marks the surplus copies of a repeated letter gray.
 
 3.  **Calculating Entropy and Choosing the Next Word**:
-    - The `choose_word_to_play()` method is the main entry point for getting a word suggestion.
-    - It calls `compute_entropy_words()` which iterates through all possible guess words to find the one with the highest entropy.
-    - For each potential guess, it simulates the feedback pattern for all remaining possible answers (`simulate_feedback_pattern()`).
-    - It then calculates the probability of each feedback pattern (`calculate_probabilities()`).
-    - Using these probabilities, it computes the entropy for the guess word (`compute_entropy()`).
-    - `choose_word_to_play()` also considers letter frequency to break ties and score words. It calculates a combined score based on entropy and letter frequency to suggest the best word to play next.
+    - `choose_word_to_play()` is the main entry point. It returns a DataFrame of guesses ranked best first.
+    - It calls `compute_entropy_words()`, which considers every allowed guess (or only the remaining candidates once few enough remain) and ranks them by entropy.
+    - For each potential guess, `simulate_feedback_pattern()` works out the feedback every remaining candidate would produce, `calculate_probabilities()` turns those patterns into a distribution, and `compute_entropy()` scores it.
+    - The entropy is multiplied by a letter-frequency score so that, among equally informative guesses, the one built from common letters wins.
 
 ### Example Usage
 
 ```python
-from wordle.utils import Wordle
+from wordle import ScoreBoard, Solver
 
-# Initialize the Wordle helper
-wordle_helper = Wordle()
-
-# Find possible words based on your guesses
-wordle_helper.find_words(
+solver = Solver()
+solver.find_words(
     green_letters="a",
     green_letter_positions=[1],
     yellow_letters="e",
     yellow_letter_positions=[3],
-    gray_letters="s"
+    gray_letters="s",
 )
+solver.choose_word_to_play()
 
-# Get the best words to play next
-wordle_helper.choose_word_to_play()
+board = ScoreBoard()
+board.update()  # who won today?
+print(board.commit_message(word=solver.answer))
 ```
